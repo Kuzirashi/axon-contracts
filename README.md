@@ -1,34 +1,108 @@
-# AXON development contracts
+# Issue 1
 
-build secp256k1 archive:
-
-``` sh
-cd contracts/common/secp256k1/ckb-lib-secp256k1
-make all-via-docker
+```
+capsule build -n mithril
 ```
 
-build blst archive:
+Errors:
+```
+➜  axon-contracts git:(ed25519) ✗ capsule build -n mithril
+Building contract mithril
+$ cross build -p mithril
+   Compiling lazy_static v1.4.0
+   Compiling num-traits v0.2.17
+   Compiling num-integer v0.1.45
+   Compiling gmp-mpfr-sys v1.6.1
+   Compiling num-bigint v0.4.4
+error: failed to run custom build command for `num-integer v0.1.45`
 
-``` sh
-cd contracts/common/blst/ckb-lib-secp256k1-blst
-make all-via-docker
+Caused by:
+  process didn't exit successfully: `/target/debug/build/num-integer-1099b434bac044a0/build-script-build` (exit status: 1)
+  --- stderr
+  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
+  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
+  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
+warning: build failed, waiting for other jobs to finish...
+error: failed to run custom build command for `num-traits v0.2.17`
+
+Caused by:
+  process didn't exit successfully: `/target/debug/build/num-traits-894859f888aad22d/build-script-build` (exit status: 1)
+  --- stderr
+  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
+  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
+  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
+error: failed to run custom build command for `gmp-mpfr-sys v1.6.1`
+
+Caused by:
+  process didn't exit successfully: `/target/debug/build/gmp-mpfr-sys-0b124e44406bae8a/build-script-build` (exit status: 101)
+  --- stderr
+  thread 'main' panicked at 'Cross compilation from x86_64-unknown-linux-gnu to riscv64imac-unknown-none-elf not supported! Use the `force-cross` feature to cross compile anyway.', /home/kuzi/.cargo/registry/src/github.com-1ecc6299db9ec823/gmp-mpfr-sys-1.6.1/build.rs:105:9
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: failed to run custom build command for `num-bigint v0.4.4`
+
+Caused by:
+  process didn't exit successfully: `/target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build` (exit status: 1)
+  --- stderr
+  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
+  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
+  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
+error[E0463]: can't find crate for `std`
+ --> /home/kuzi/.cargo/registry/src/github.com-1ecc6299db9ec823/lazy_static-1.4.0/src/inline_lazy.rs:9:1
+  |
+9 | extern crate std;
+  | ^^^^^^^^^^^^^^^^^ can't find crate
+  |
+  = note: the `riscv64imac-unknown-none-elf` target may not support the standard library
+  = help: consider building the standard library from source with `cargo build -Zbuild-std`
+
+For more information about this error, try `rustc --explain E0463`.
+error: could not compile `lazy_static` due to previous error
+error: command exited with non-zero code `cross build -p mithril`: 101
 ```
 
-build contracts:
+# Issue 2
+Repository: https://github.com/input-output-hk/mithril/tree/main/mithril-stm
 
-``` sh
-capsule build -n selection
-capsule build -n checkpoint
-capsule build -n stake
-capsule build -n withdrawal
+```
+cd `mithril-stm`
+cargo build --target riscv64gc-unknown-linux-gnu --features 'num-integer-backend'
 ```
 
-run tests:
+Errors:
+```
+➜  mithril-stm git:(main) ✗ cargo build --target riscv64gc-unknown-linux-gnu --features 'num-integer-backend'
+   Compiling blst v0.3.11
+   Compiling zeroize v1.6.0
+   Compiling thiserror v1.0.49
+   Compiling serde v1.0.189
+   Compiling mithril-stm v0.3.8 (/home/kuzi/projects/mithril/mithril-stm)
+error: linking with `cc` failed: exit status: 1
+  |
+  = note: LC_ALL="C" PATH="/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/home/kuzi/go/bin:/home/kuzi/.nvm/versions/node/v16.20.2/bin:/home/kuzi/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/dotnet/:/Docker/host/bin:/mnt/c/Users/never/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/never/AppData/Local/Programs/Microsoft VS Code/bin:/home/kuzi/.foundry/bin:/usr/local/go/bin" VSLANG="1033" "cc" "-Wl,--version-script=/tmp/rustcEmd2ZV/list" "-Wl,--no-undefined-version" "/tmp/rustcEmd2ZV/symbols.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.14nxg3dl06xgmxxb.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.16f3cbi0tqy6qi1o.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.17m93u99kq6vchb.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.18rk24hm7eao42sn.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.19nhd6lceehvcmu9.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1akrf6cpl8bw3oss.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1elfpp7jy5esnxiq.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1eypc68b0mlzbe98.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1f1xnt649ykgs7ye.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1kyoyvk5i3whw5nr.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1pbcwq7wmpptcwwd.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1umzkpm7nj9mtrwt.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1vl1vku68tgn6n6e.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1vn62gaxt9ndmdqc.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1x2psndssuew8nry.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1x62exmztny41nhr.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1xv6tq3kq7xhx9nl.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.22crfedl7mobu9wa.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.25uo219cquk2blbj.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.28aj3obe01hhvt0s.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2965kifkmeepa9wf.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.29pzmzed8cccz9vd.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2b16uppng4wxsm74.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2glz1eb0toafe59i.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2lqeemetozabqxd4.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2mkvc3ck4vsq76ba.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2ni2241s0hy9lksu.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2o8cw69x1uev5v49.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2qgyspeyaldqoaqt.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.2uzfd8ap9blj4hte.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.32cpeqdml4fs6j3o.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.36n62dpwp31va72s.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.36pu5xx3rtuiyqs8.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.39ckpfgkp8rq1sza.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3b835stbx3i4s02c.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3dgjegmgemcuapyo.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3drlb68gc4wcki3z.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3fowj1tbh6ce71l4.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3fucx1uywgi1l2mk.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3invtcaiegjzvic.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3iuykd6e2n5lroaw.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3ktslrgedktmeu96.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3mdbd2cmmkhcpzpb.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3nbisfz91n2uqktf.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3onb0j359f3hq1kn.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3rz3wmh092o0gzag.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3sdrseurw7b5ww4y.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3si0j6838ulbp3cl.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3uy2qjxxwspptq1x.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3uzz8jfn6bf3k851.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3yhv4jmhvnfppymg.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.3ysth7xt1uwip5d.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.43eotbiba15p6ihe.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.43esovgi0k2g4hdz.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.46vxhuu046dzpujk.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.47qqa14lvpci9npx.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.47yhbpki84a6igdf.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.482wmqrht2wuvigv.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.487557ufxvwzwouw.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4eauiat6dbqzxaoe.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4hv0j6iqs83gie8s.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4lr8zkn8k03uzupg.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4m2ioxd9706pu36k.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4rxx8ncdkoagp75m.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4w9tq9wxqqs1vy53.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.4xpgh2g7zipf4tyf.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.503lu1siuvb1wn22.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5295zhtyablb4ren.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.54k442h5v234xbpi.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.54lbfwaqsg52s04c.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5648qc56pvtonvk3.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.57b7sxhroxlzh187.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.58npije7boyws3q2.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5affspmdc96126c6.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5av0vjlvg8llddl9.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5b3x8hbqrrg7knii.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5c15g87m474uw4jt.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5dbux30e0bgqay26.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5dkldrl3gsk5vm25.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5dndcy74c82ludky.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.5guye41oom0lup7c.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.azkmjd7c6x9hdm4.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.biqpxj3w365wldx.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.h8laxnljewfl7c0.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.oinz91ee53w8uvj.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.pgs0pn20425wuvc.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.qpz0sloab9m4yv4.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.r9utprabjbxsg08.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.x6pomjg8v0ivgeb.rcgu.o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.1gbo1spm081cmoqo.rcgu.o" "-Wl,--as-needed" "-L" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps" "-L" "/home/kuzi/projects/mithril/target/debug/deps" "-L" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/build/blst-e6234ce8a46b24b6/out" "-L" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib" "-Wl,-Bstatic" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libthiserror-8da779e6349cda3c.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/librand_core-1c432a22f342f801.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libserde-621529a4c99dcff0.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libblst-0ccfde59e3889c0b.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libthreadpool-b1ca02a2aa6e9cc6.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libnum_cpus-00a620a122677d31.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/liblibc-63a4f3ec2f492d1c.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libzeroize-6223f0827655ce1b.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libblake2-607ea81e95039dea.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libdigest-b701460bcc3f4bef.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libsubtle-b18551673027d299.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libblock_buffer-c5b36d1247d504e6.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libcrypto_common-80ad23aff8313096.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libgeneric_array-3a0cd3fd94f8e144.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libtypenum-27f5161e5d40a23d.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libnum_rational-3e0e31d51af98476.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libnum_bigint-9a637aa44411e61d.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libnum_integer-fdcc7cac3870cdb4.rlib" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libnum_traits-bd24d797a31a3a06.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libstd-7c20a79be40626d5.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libpanic_unwind-0828025c99efa306.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libobject-cad77585ea5b2597.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libmemchr-819221be8f9a39ca.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libaddr2line-27305f678c78b7e8.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libgimli-d6dc5edd95c10e8b.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/librustc_demangle-0d40f94f5bf49047.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libstd_detect-400d9ad6f69566ef.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libhashbrown-efe127239291790f.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/librustc_std_workspace_alloc-b2b1393aaa45cbdc.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libminiz_oxide-3f8d7ae12780bb8a.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libadler-9fd99aca5a91830a.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libunwind-130742698a3dada1.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libcfg_if-61c4490aa3cd5617.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/liblibc-11b24d104e4a6819.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/liballoc-edf623dacc1b8376.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/librustc_std_workspace_core-f7351a9898cc3f1f.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libcore-8c347cbe3d348ef5.rlib" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib/libcompiler_builtins-83534430d5ebaab4.rlib" "-Wl,-Bdynamic" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl" "-lc" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L" "/home/kuzi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/riscv64gc-unknown-linux-gnu/lib" "-o" "/home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/libmithril_stm.so" "-Wl,--gc-sections" "-shared" "-Wl,-z,relro,-z,now" "-nodefaultlibs"
+  = note: /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: Relocations in generic ELF (EM: 243)
+          /usr/bin/ld: /home/kuzi/projects/mithril/target/riscv64gc-unknown-linux-gnu/debug/deps/mithril_stm.10asqdhoqec9vxrf.rcgu.o: error adding symbols: file in wrong format
+          collect2: error: ld returned 1 exit status
 
-``` sh
-cd tests
-cargo test test_selection_success -- --nocapture
-cargo test test_checkpoint_success -- --nocapture
-cargo test test_stake_success -- --nocapture
-cargo test test_withdrawal_success -- --nocapture
+
+error: could not compile `mithril-stm` (lib) due to previous error
 ```

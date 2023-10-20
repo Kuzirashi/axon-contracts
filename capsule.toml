@@ -2,30 +2,13 @@
 # # path of rust contracts workspace directory,
 # # a `Cargo.toml` file is expected under the directory.
 # workspace_dir = "."
-# toolchain = "nightly-2021-08-16"
 # docker_image = "thewawar/ckb-capsule:2021-08-16"
 
 # capsule version
-version = "0.7.1 c094e36"
+version = "0.10.1"
 # path of deployment config file
 deployment = "deployment.toml"
 
 [[contracts]]
-name = "selection"
+name = "mithril"
 template_type = "Rust"
-
-[[contracts]]
-name = "checkpoint"
-template_type = "Rust"
-
-[[contracts]]
-name = "withdrawal"
-template_type = "Rust"
-
-[[contracts]]
-name = "stake"
-template_type = "Rust"
-
-[[contracts]]
-name = "cardano"
-template_type = "C"
