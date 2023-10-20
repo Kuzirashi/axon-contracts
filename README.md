@@ -44,7 +44,7 @@ error: command exited with non-zero code `cross build -p mithril`: 101
 Repository: https://github.com/input-output-hk/mithril/tree/main/mithril-stm
 
 ```
-cd `mithril-stm`
+cd mithril-stm
 cargo build --target riscv64gc-unknown-linux-gnu --features 'num-integer-backend'
 ```
 
