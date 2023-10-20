@@ -6,46 +6,25 @@ capsule build -n mithril
 
 Errors:
 ```
-➜  axon-contracts git:(ed25519) ✗ capsule build -n mithril
+➜  axon-contracts git:(issues) ✗ capsule build -n mithril
 Building contract mithril
 $ cross build -p mithril
+   Compiling autocfg v1.0.1
+   Compiling proc-macro2 v1.0.36
+   Compiling unicode-xid v0.2.2
+   Compiling syn v1.0.85
+   Compiling version_check v0.9.4
+   Compiling typenum v1.15.0
+   Compiling crossbeam-utils v0.8.5
+   Compiling cc v1.0.72
    Compiling lazy_static v1.4.0
-   Compiling num-traits v0.2.17
-   Compiling num-integer v0.1.45
+   Compiling libc v0.2.112
    Compiling gmp-mpfr-sys v1.6.1
-   Compiling num-bigint v0.4.4
-error: failed to run custom build command for `num-integer v0.1.45`
-
-Caused by:
-  process didn't exit successfully: `/target/debug/build/num-integer-1099b434bac044a0/build-script-build` (exit status: 1)
-  --- stderr
-  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
-  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
-  /target/debug/build/num-integer-1099b434bac044a0/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-integer-1099b434bac044a0/build-script-build)
-warning: build failed, waiting for other jobs to finish...
-error: failed to run custom build command for `num-traits v0.2.17`
-
-Caused by:
-  process didn't exit successfully: `/target/debug/build/num-traits-894859f888aad22d/build-script-build` (exit status: 1)
-  --- stderr
-  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
-  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
-  /target/debug/build/num-traits-894859f888aad22d/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-traits-894859f888aad22d/build-script-build)
-error: failed to run custom build command for `gmp-mpfr-sys v1.6.1`
-
-Caused by:
-  process didn't exit successfully: `/target/debug/build/gmp-mpfr-sys-0b124e44406bae8a/build-script-build` (exit status: 101)
-  --- stderr
-  thread 'main' panicked at 'Cross compilation from x86_64-unknown-linux-gnu to riscv64imac-unknown-none-elf not supported! Use the `force-cross` feature to cross compile anyway.', /home/kuzi/.cargo/registry/src/github.com-1ecc6299db9ec823/gmp-mpfr-sys-1.6.1/build.rs:105:9
-  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-error: failed to run custom build command for `num-bigint v0.4.4`
-
-Caused by:
-  process didn't exit successfully: `/target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build` (exit status: 1)
-  --- stderr
-  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
-  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
-  /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /target/debug/build/num-bigint-86db4e73c93f5b74/build-script-build)
+   Compiling az v1.2.1
+   Compiling serde_derive v1.0.133
+   Compiling rayon-core v1.12.0
+   Compiling rug v1.22.0
+   Compiling serde v1.0.133
 error[E0463]: can't find crate for `std`
  --> /home/kuzi/.cargo/registry/src/github.com-1ecc6299db9ec823/lazy_static-1.4.0/src/inline_lazy.rs:9:1
   |
@@ -57,6 +36,7 @@ error[E0463]: can't find crate for `std`
 
 For more information about this error, try `rustc --explain E0463`.
 error: could not compile `lazy_static` due to previous error
+warning: build failed, waiting for other jobs to finish...
 error: command exited with non-zero code `cross build -p mithril`: 101
 ```
 
