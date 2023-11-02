@@ -15,14 +15,14 @@ use ckb_std::{
 
 use crate::error::Error;
 
+use mithril_stm::stm::StmParameters;
+
 pub fn main() -> Result<(), Error> {
     // remove below examples and write your code here
 
     let script = load_script()?;
     let args: Bytes = script.args().unpack();
     debug!("script args is {:?}", args);
-
-
 
     // return an error if args is invalid
     if args.is_empty() {
@@ -31,6 +31,14 @@ pub fn main() -> Result<(), Error> {
 
     let tx_hash = load_tx_hash()?;
     debug!("tx hash is {:?}", tx_hash);
+
+    let params = StmParameters {
+        k: 357,
+        m: 2642,
+        phi_f: 0.2,
+    };
+
+    debug!("StmParameters {:?}", params.k);
 
     let _buf: Vec<_> = vec![0u8; 32];
 

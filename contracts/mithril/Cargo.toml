@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 ckb-std = "0.14.0"
-mithril-stm = { path = "../../../mithril/mithril-stm", version = "0.3.8" }
+mithril-stm = { path = "../../../mithril/mithril-stm", version = "0.3.8", features=[] }
