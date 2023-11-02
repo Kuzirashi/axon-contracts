@@ -1,4 +1,5 @@
 # Rust
+target
 target/*
 .cache/.cargo/*
 contracts/**/target/*

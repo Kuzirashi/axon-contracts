@@ -1,5 +1,6 @@
 [workspace]
 members = ["contracts/mithril"]
+exclude = ["tests"]
 
 [profile.release]
 overflow-checks = true
